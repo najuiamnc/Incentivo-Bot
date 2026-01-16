@@ -1,10 +1,16 @@
-# Writing to a new file
-with open("new_file.txt", "w") as f:
-    f.write("Hello! This file was created using Python.")
+from flask import Flask
+from threading import Thread
 
-print("File 'new_file.txt' has been created successfully.")
+app = Flask('')
 
-# Reading from the file
-with open("new_file.txt", "r") as f:
-    content = f.read()
-    print(f"Content of the file: {content}")
+@app.route('/')
+def home():
+     return 'Olá, estou vivo!'
+
+def run():
+    app.run(host='0.0.0.0', port=8080)
+
+def keep_alive():
+     t = Thread(target=run)
+     t.start()
+    

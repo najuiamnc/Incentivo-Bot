@@ -4,6 +4,7 @@ import requests
 import json
 import random
 from replit import db
+from keep_alive import keep_alive
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -77,9 +78,12 @@ async def on_message(message):
             await message.channel.send(random.choice(options))
     
     if msg.startswith('$new'):
-        encouraging_message = message.content.split('$new ', 1)[1]
-        update_encouragements(encouraging_message)
-        await message.channel.send('New encouraging message added.')
+        try:
+            encouraging_message = message.content.split('$new ', 1)[1]
+            update_encouragements(encouraging_message)
+            await message.channel.send('New encouraging message added.')
+        except IndexError:
+            await message.channel.send('Please include a message to add.')
     
     if msg.startswith('$del'):
         encouragements = []
@@ -91,7 +95,6 @@ async def on_message(message):
             except (ValueError, IndexError):
                 pass
         await message.channel.send(encouragements)
-        
 
     if msg.startswith('$list'):
         encouragements = []
@@ -102,17 +105,17 @@ async def on_message(message):
     if msg.startswith('$responding'):
         try:
             value = msg.split('$responding ', 1)[1]
-        
-        if value.lower() == 'true':
-            db['responding'] = True
-            await message.channel.send('Responding is on.')    
-        else: db['responding'] = False
+            if value.lower() == 'true':
+                db['responding'] = True
+                await message.channel.send('Responding is on.')
+            else:
+                db['responding'] = False
                 await message.channel.send('Responding is off.')
         except IndexError:
-            await message.channel.send(f"Responding is currently {'on' if db['responding'] else 'off'}.")
+            status = 'on' if db['responding'] else 'off'
+            await message.channel.send(f"Responding is currently {status}.")
 
-# Run the bot with the token from environment variables
-
+keep_alive()
 token = os.getenv('DISCORD_TOKEN') or os.getenv('TOKEN')
 if token:
     client.run(token)
