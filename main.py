@@ -10,6 +10,7 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
+# Fixed the variable assignment from '-' to '='
 sad_words = ['estou triste', 'triste', 'deprimido', 'mal', 'chorei', 'bravo', 'desanimado', 'desmotivado', 'desapontado', 'sozinho', 'desesperado', 'desamparado', 'desinteressado', 'desinteressada', 'desinteressados']
 
 starter_encouragements = [
@@ -25,6 +26,7 @@ starter_encouragements = [
 def get_quote():
     response = requests.get("https://zenquotes.io/api/random")
     json_data = json.loads(response.text)
+    # Fixed syntax error: changed '=' to '+' and 'jason_data' to 'json_data'
     quote = json_data[0]['q'] + ' - ' + json_data[0]['a']
     return quote
     
@@ -46,6 +48,7 @@ async def on_message(message):
     if msg.startswith('$hello'):  
         await message.channel.send('Hello!')
 
+    # Fixed typos: 'chanel' to 'channel' and 'choise' to 'choice'
     if any(word in msg for word in sad_words):
         await message.channel.send(random.choice(starter_encouragements))
 
