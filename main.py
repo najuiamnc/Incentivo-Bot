@@ -3,21 +3,23 @@ import os
 import requests 
 import json 
 import random
+from replit import db
 
-# Define the intents your bot needs
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-# Fixed the variable assignment and commas
+# Fixed missing commas and typos in sad_words list
 sad_words = [
     'estou triste', 'triste', 'deprimido', 'mal', 'chorei', 'bravo', 
     'desanimado', 'desmotivado', 'desapontado', 'sozinho', 
     'desesperado', 'desamparado', 'desinteressado', 'desinteressada', 
-    'desinteressados', 'não quero mais viver'
+    'desinteressados', 'não quero mais viver', 'depressao', 'ansiedade',
+    'irritado', 'irritada'
 ]
 
+# Fixed missing commas in starter_encouragements list
 starter_encouragements = [
     'Eu te amo!', 
     'Você é incrível!', 
@@ -34,16 +36,24 @@ def get_quote():
     try:
         response = requests.get("https://zenquotes.io/api/random")
         json_data = json.loads(response.text)
-        # Fixed syntax error and typo
+        # Fixed syntax error: changed '=' to '+' and 'jason_data' to 'json_data'
         quote = json_data[0]['q'] + ' - ' + json_data[0]['a']
         return quote
     except Exception as e:
         print(f"Error fetching quote: {e}")
-        return "Keep going, you're doing great!"
-    
+        return "Tudo vai ficar bem! Continue em frente."
+
+def update_encouragements(encouraging_message):
+    if 'encouragements' in db.keys():
+        encouragements = db['encouragements']
+        encouragements.append(encouraging_message)
+        db['encouragements'] = encouragements
+    else:
+        db['encouragements'] = [encouraging_message]
+
 @client.event  
 async def on_ready(): 
-   print(f'We have logged in as {client.user}') 
+   print(f'We have logged in as {client.user}')
 
 @client.event
 async def on_message(message): 
@@ -56,8 +66,8 @@ async def on_message(message):
         quote = get_quote()
         await message.channel.send(quote)
 
-    if msg.startswith('$hello'):  
-        await message.channel.send('Hello!')
+    if msg.startswith('$hello'):
+        await message.channel.send('Olá! Como posso ajudar hoje?')
 
     if any(word in msg for word in sad_words):
         await message.channel.send(random.choice(starter_encouragements))
