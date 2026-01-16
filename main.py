@@ -91,6 +91,7 @@ async def on_message(message):
             except (ValueError, IndexError):
                 pass
         await message.channel.send(encouragements)
+        
 
     if msg.startswith('$list'):
         encouragements = []
@@ -101,14 +102,16 @@ async def on_message(message):
     if msg.startswith('$responding'):
         try:
             value = msg.split('$responding ', 1)[1]
-            if value.lower() == 'true':
-                db['responding'] = True
-                await message.channel.send('Responding is on.')
-            else:
-                db['responding'] = False
+        
+        if value.lower() == 'true':
+            db['responding'] = True
+            await message.channel.send('Responding is on.')    
+        else: db['responding'] = False
                 await message.channel.send('Responding is off.')
         except IndexError:
             await message.channel.send(f"Responding is currently {'on' if db['responding'] else 'off'}.")
+
+# Run the bot with the token from environment variables
 
 token = os.getenv('DISCORD_TOKEN') or os.getenv('TOKEN')
 if token:
