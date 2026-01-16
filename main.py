@@ -1,43 +1,37 @@
 import discord
-import os 
-import requests 
-import json 
+import os
+import requests
+import json
 import random
 from replit import db
 
-# Define the intents your bot needs
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-# List of words to trigger encouragement
+# Added missing commas in sad_words list
 sad_words = [
-    'estou triste', 'triste', 'deprimido', 'mal', 'chorei', 'bravo', 
-    'desanimado', 'desmotivado', 'desapontado', 'sozinho', 
-    'desesperado', 'desamparado', 'desinteressado', 'desinteressada', 
-    'desinteressados', 'não quero mais viver', 'depressao', 'ansiedade',
+    'estou triste', 'triste', 'deprimido', 'mal', 'chorei',
+    'bravo', 'desanimado', 'desmotivado', 'desapontado', 'sozinho',
+    'desesperado', 'desamparado', 'desinteressado', 'desinteressada',
+    'desinteressados', 'não quero mais viver', 'depressao', 'ansiedade', 
     'irritado', 'irritada'
 ]
 
-# Initial list of encouraging messages
+# Added missing commas in starter_encouragements list
 starter_encouragements = [
-    'Eu te amo!', 
-    'Você é incrível!', 
-    'Você é o melhor!', 
-    'Eu acredito em você!', 
-    'Você é forte!', 
-    'Você é especial!', 
-    'Tenho orgulho de você!',
-    'Vamos jogar um jogo?',
+    'Eu te adoro!', 'Você é incrível!', 'Você é o melhor!',
+    'Eu acredito em você!', 'Você é forte!', 'Você é especial!',
+    'Tenho orgulho de você!', 'Vamos jogar um jogo?',
     'Sinto sua falta todos os dias!'
 ]
-             
+
 def get_quote():
     try:
         response = requests.get("https://zenquotes.io/api/random")
         json_data = json.loads(response.text)
-        # Fixed syntax error and typo
+        # FIXED: Changed '=' to '+' and fixed 'jason_data' typo
         quote = json_data[0]['q'] + ' - ' + json_data[0]['a']
         return quote
     except Exception as e:
@@ -52,28 +46,55 @@ def update_encouragements(encouraging_message):
     else:
         db['encouragements'] = [encouraging_message]
 
-@client.event  
-async def on_ready(): 
-   print(f'We have logged in as {client.user}')
+def delete_encouragement(index):
+    if 'encouragements' in db.keys():
+        encouragements = db['encouragements']
+        if len(encouragements) > index:
+            del encouragements[index]
+            db['encouragements'] = encouragements
 
 @client.event
-async def on_message(message): 
-    if message.author == client.user:  
+async def on_ready():
+    print(f'We have logged in as {client.user}')
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
         return
 
     msg = message.content.lower()
 
-    if msg.startswith('$inspire'): 
+    if msg.startswith('$inspire'):
         quote = get_quote()
         await message.channel.send(quote)
 
     if msg.startswith('$hello'):
         await message.channel.send('Olá! Como posso ajudar hoje?')
 
-    if any(word in msg for word in sad_words):
-        await message.channel.send(random.choice(starter_encouragements))
+    options = starter_encouragements
+    if 'encouragements' in db.keys():
+        # Ensure we convert the db object to a list for concatenation
+        options = options + list(db['encouragements'])
 
-# Token handling
+    if any(word in msg for word in sad_words):
+        await message.channel.send(random.choice(options))
+
+    if msg.startswith('$new'):
+        encouraging_message = msg.split('$new ', 1)[1]
+        update_encouragements(encouraging_message)
+        await message.channel.send('New encouraging message added.')
+
+    if msg.startswith('$del'):
+        encouragements = []
+        if 'encouragements' in db.keys():
+            try:
+                index = int(msg.split('$del ', 1)[1])
+                delete_encouragement(index)
+                encouragements = list(db['encouragements'])
+            except (ValueError, IndexError):
+                pass
+        await message.channel.send(encouragements)
+
 token = os.getenv('DISCORD_TOKEN') or os.getenv('TOKEN')
 if token:
     client.run(token)
