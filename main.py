@@ -5,12 +5,13 @@ import json
 import random
 from replit import db
 
+# Define the intents your bot needs
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-# Fixed missing commas and typos in sad_words list
+# List of words to trigger encouragement
 sad_words = [
     'estou triste', 'triste', 'deprimido', 'mal', 'chorei', 'bravo', 
     'desanimado', 'desmotivado', 'desapontado', 'sozinho', 
@@ -19,7 +20,7 @@ sad_words = [
     'irritado', 'irritada'
 ]
 
-# Fixed missing commas in starter_encouragements list
+# Initial list of encouraging messages
 starter_encouragements = [
     'Eu te amo!', 
     'Você é incrível!', 
@@ -36,7 +37,7 @@ def get_quote():
     try:
         response = requests.get("https://zenquotes.io/api/random")
         json_data = json.loads(response.text)
-        # Fixed syntax error: changed '=' to '+' and 'jason_data' to 'json_data'
+        # Fixed syntax error and typo
         quote = json_data[0]['q'] + ' - ' + json_data[0]['a']
         return quote
     except Exception as e:
