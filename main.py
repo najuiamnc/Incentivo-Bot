@@ -10,8 +10,13 @@ intents.message_content = True
 
 client = discord.Client(intents=intents)
 
-# Fixed the variable assignment from '-' to '='
-sad_words = ['estou triste', 'triste', 'deprimido', 'mal', 'chorei', 'bravo', 'desanimado', 'desmotivado', 'desapontado', 'sozinho', 'desesperado', 'desamparado', 'desinteressado', 'desinteressada', 'desinteressados']
+# Fixed the variable assignment from '-' to '=' and added missing commas
+sad_words = [
+    'estou triste', 'triste', 'deprimido', 'mal', 'chorei', 'bravo', 
+    'desanimado', 'desmotivado', 'desapontado', 'sozinho', 
+    'desesperado', 'desamparado', 'desinteressado', 'desinteressada', 
+    'desinteressados', 'não quero mais viver'
+]
 
 starter_encouragements = [
     'Eu te amo!', 
@@ -20,7 +25,9 @@ starter_encouragements = [
     'Eu acredito em você!', 
     'Você é forte!', 
     'Você é especial!', 
-    'Tenho orgulho de você!'
+    'Tenho orgulho de você!',
+    'Vamos jogar um jogo?',
+    'Sinto sua falta todos os dias!'
 ]
              
 def get_quote():
