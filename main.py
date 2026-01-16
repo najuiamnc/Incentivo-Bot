@@ -115,9 +115,10 @@ async def on_message(message):
             status = 'on' if db['responding'] else 'off'
             await message.channel.send(f"Responding is currently {status}.")
 
-keep_alive()
-token = os.getenv('DISCORD_TOKEN') or os.getenv('TOKEN')
-if token:
-    client.run(token)
-else:
-    print("Error: No bot token found. Please add 'DISCORD_TOKEN' to your Secrets.")
+if __name__ == "__main__":
+    keep_alive()
+    token = os.getenv('DISCORD_TOKEN') or os.getenv('TOKEN')
+    if token:
+        client.run(token)
+    else:
+        print("Error: No bot token found. Please add 'DISCORD_TOKEN' to your Secrets.")
