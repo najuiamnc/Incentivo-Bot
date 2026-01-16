@@ -1,28 +1,28 @@
 import discord
 import os
 
-# To use this bot, you'll need to add your bot token as a secret named 'DISCORD_TOKEN'
-# You can do this in the 'Secrets' tab (lock icon) in the sidebar.
-
-class MyClient(discord.Client):
-    async def on_ready(self):
-        print(f'Logged on as {self.user}!')
-
-    async def on_message(self, message):
-        # Don't respond to ourselves
-        if message.author == self.user:
-            return
-
-        if message.content == 'ping':
-            await message.channel.send('pong')
-
+# Set up intents for the bot
 intents = discord.Intents.default()
-intents.message_content = True
+intents.message_content = True  # Allows the bot to read message content
 
-client = MyClient(intents=intents)
+client = discord.Client(intents=intents)
 
-token = os.getenv('DISCORD_TOKEN')
+@client.event
+async def on_ready():
+    print(f'Logged on as {client.user}!')
+
+@client.event
+async def on_message(message):
+    # Don't respond to ourselves
+    if message.author == client.user:
+        return
+
+    if message.content.startswith('$hello'):
+        await message.channel.send('Hello!')
+
+# Using DISCORD_TOKEN as a standard secret name
+token = os.getenv('DISCORD_TOKEN') or os.getenv('TOKEN')
 if token:
     client.run(token)
 else:
-    print("Please set your DISCORD_TOKEN secret.")
+    print("Please set your DISCORD_TOKEN secret in the Secrets tab.")
