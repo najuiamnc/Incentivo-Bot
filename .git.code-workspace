@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".git"
+		},
+		{
+			"path": ".local"
+		},
+		{
+			"path": "__pycache__"
+		}
+	]
+}
