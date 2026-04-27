@@ -1,31 +1,66 @@
-README.md
+# 💜 Incentivo Bot — Discord
 
-# 🤖 Incentivo-Bot
-
-**Um Bot de Discord focado em bem-estar e positividade.**
-
-Este projeto é um bot desenvolvido em Python que visa criar um ambiente de apoio em servidores do Discord. Ele monitora o chat em busca de palavras-chave que indiquem desânimo ou tristeza e responde automaticamente com mensagens de incentivo e suporte.
-
-## 🚀 Funcionalidades
-
-* **Detecção de Sentimentos:** Identifica palavras-chave específicas no chat.
-* **Respostas Motivacionais:** Envia frases de apoio aleatórias ou personalizadas.
-* **Gerenciamento Dinâmico:** Comandos para adicionar ou remover frases motivacionais diretamente pelo Discord.
-* **Uptime 24/7:** Configurado para rodar continuamente (via Flask/Keep Alive).
-
-## 🛠️ Tecnologias Utilizadas
-
-* Python
-* Discord.py
-* Flask (para manter o bot online)
-
-## 📋 Como usar
-
-1.  Clone este repositório.
-2.  Instale as dependências listadas no `pyproject.toml` ou `requirements.txt`.
-3.  Crie um arquivo `.env` com seu TOKEN do Discord.
-4.  Execute o arquivo `main.py`.
+> Bot de apoio emocional para servidores Discord. Monitora o chat e, ao identificar palavras de desânimo, responde automaticamente com mensagens de encorajamento.
 
 ---
-*Desenvolvido por Julia Amancio*
+
+## 💡 Como funciona
+
+1. O bot monitora todas as mensagens do servidor em tempo real
+2. Ao detectar palavras-chave de desânimo (ex: "triste", "cansado", "desistir"...)
+3. Responde automaticamente com uma mensagem de encorajamento personalizada
+4. Hospedado na nuvem com uptime contínuo via **Uptime Robot**
+
+---
+
+## 🛠️ Tecnologias
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Discord.py](https://img.shields.io/badge/Discord.py-5865F2?style=for-the-badge&logo=discord&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
+
+---
+
+## ▶️ Como executar localmente
+
+**Pré-requisitos:** Python 3, conta de desenvolvedor no Discord
+
+```bash
+# Clone o repositório
+git clone https://github.com/najuiamnc/Incentivo-Bot
+
+# Instale as dependências
+pip install discord.py flask
+
+# Configure o token do bot
+# Crie um arquivo .env com:
+# TOKEN=seu_token_aqui
+
+# Execute
+python bot.py
+```
+
+> ⚠️ Nunca compartilhe seu token publicamente. Use variáveis de ambiente.
+
+---
+
+## ⚙️ Configuração do Bot no Discord
+
+1. Acesse o [Discord Developer Portal](https://discord.com/developers/applications)
+2. Crie uma nova aplicação e adicione um bot
+3. Copie o token e salve no `.env`
+4. Convide o bot para o seu servidor com as permissões necessárias
+
+---
+
+## ☁️ Deploy na Nuvem
+
+O bot está hospedado gratuitamente e mantido ativo via **Uptime Robot**, que faz pings periódicos no endpoint Flask para evitar que o serviço durma.
+
+---
+
+## 👩‍💻 Autora
+
+Feito com 💜 por [Julia Amancio](https://github.com/najuiamnc)  
+[![Portfolio](https://img.shields.io/badge/Portfólio-000?style=flat&logo=github&logoColor=white)](https://najuiamnc.github.io/portfolio-pessoal/)
 
